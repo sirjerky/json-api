@@ -1,0 +1,22 @@
+{
+  "name": "json-api",
+  "version": "0.0.0",
+  "description": "quick json api assignment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sirjerky/json-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sirjerky/json-api/issues"
+  },
+  "homepage": "https://github.com/sirjerky/json-api",
+  "dependencies": {
+    "express": "^4.8.3"
+  }
+}
