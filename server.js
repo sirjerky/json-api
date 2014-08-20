@@ -1,7 +1,13 @@
 var express = require("express");
 var http = require('http');
+var fs = require('fs');
 
 var app = express();
+
+var port = process.env.port || 3000;
+var router = express.Router();
+
+var baseUrl = './api/';
 
 http.createServer(app, function(req, res){
 	console.log("Server Created");
@@ -28,12 +34,31 @@ app.get('/time', function(req, res){
 	res.send("The local time is " + hour + ':' + d.getMinutes() + " " + ampm);
 });
 
-app.get('/:input', function(req, res){
-	//var name = req.url.split('/').pop();
-	var data = {"msg": "Hello " + req.params.input + "!"};
-	res.send(data);
+router.get('/', function(req, res){
+	res.send('base url for api');
 });
 
-app.listen(3000, function(){
-	console.log("Server Started on port 3000");
+app.use('/api', router);
+
+router.get('/:input', function(req, res){
+	var fileName = baseUrl + req.params.input + '.json';
+	fs.readFile(fileName, 'utf-8', function(err, data){
+		if(err) res.send('status 500, file not found');
+		data = JSON.parse(data);	
+		res.json(data);
+	});
+});
+
+router.post('/:input', function(req, res){
+	var data = {name: req.params.input};
+	var fileName = baseUrl + data.name + '.json'
+	fs.writeFile(fileName, JSON.stringify(data), function(err){
+		if(err) return res.status(500);
+		console.log('success!');
+		res.json(data);
+	});
+});
+
+app.listen(port, function(){
+	console.log("Server Started on port "+ port);
 });

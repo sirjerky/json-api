@@ -18,5 +18,8 @@
   "homepage": "https://github.com/sirjerky/json-api",
   "dependencies": {
     "express": "^4.8.3"
+  },
+  "devDependencies": {
+    "body-parser": "^1.6.5"
   }
 }
