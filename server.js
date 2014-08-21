@@ -1,6 +1,7 @@
 var express = require("express");
 var http = require('http');
 var fs = require('fs');
+var bodyParser = require('body-parser');
 
 var app = express();
 
@@ -8,6 +9,10 @@ var port = process.env.port || 3000;
 var router = express.Router();
 
 var baseUrl = './api/';
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
 
 http.createServer(app, function(req, res){
 	console.log("Server Created");
@@ -43,14 +48,14 @@ app.use('/api', router);
 router.get('/:input', function(req, res){
 	var fileName = baseUrl + req.params.input + '.json';
 	fs.readFile(fileName, 'utf-8', function(err, data){
-		if(err) res.send('status 500, file not found');
+		if(err) return res.send('status 500, file not found');
 		data = JSON.parse(data);	
 		res.json(data);
 	});
 });
 
-router.post('/:input', function(req, res){
-	var data = {name: req.params.input};
+router.post('/', function(req, res){
+	var data = req.body;
 	var fileName = baseUrl + data.name + '.json'
 	fs.writeFile(fileName, JSON.stringify(data), function(err){
 		if(err) return res.status(500);
